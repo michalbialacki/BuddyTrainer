@@ -55,6 +55,7 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.3.1'
+    implementation 'androidx.camera:camera-core:1.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -72,4 +73,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.4.3")
     implementation "androidx.room:room-ktx:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
+
+    //ZXing - QR generator & scanner library
+    implementation 'com.google.zxing:core:3.4.0'
 }
