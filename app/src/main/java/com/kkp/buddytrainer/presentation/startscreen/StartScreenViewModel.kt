@@ -3,6 +3,7 @@ package com.kkp.buddytrainer.presentation.startscreen
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkp.buddytrainer.domain.model.Person
@@ -20,22 +21,37 @@ class StartScreenViewModel @Inject constructor(
     private val personRepo : PersonRepository
 )
     : ViewModel() {
+        private val temp = mutableListOf<String>()
+        private val dummy = Person(0f,0f,0f,"",0)
+        var mainUser : MutableState<Person> = mutableStateOf(dummy)
+        var isLoading = mutableStateOf(true)
+        var buddiesList = mutableListOf<Person>()
+        var errorOccurred = mutableStateOf(false)
 
-        var person : MutableState<Person> = mutableStateOf(Person(0f,0f,0f,"",0))
         init {
             getUser()
         }
 
 
     fun getUser() {
-        viewModelScope.launch(Dispatchers.IO) {
-//            TODO("Create a main user Personal Record and grab his maxes from Db")
-            try {
-                personRepo.getPersonFromRoom(213742069).collect {
-                    person.value = it
+        viewModelScope.launch {
+            if(isLoading.value){
+                try {
+                    personRepo.getBuddiesFromRoom().collect{
+                        buddiesList = it.toMutableList()
+                        if(buddiesList.isNotEmpty()){
+                            mainUser.value = buddiesList.find { it.id == 213742069L } ?: dummy
+                            buddiesList.remove(mainUser.value)
+                        }
+                        isLoading.value = false
+                    }
+                } catch (e:Exception){
+                    Log.d("GetUsers", "Users not found; $e")
+                    errorOccurred.value = true
                 }
-            } catch (e:Exception){
-                Log.d("GetMainUser", "User not found")
+            }else{
+                Log.d("GetMainUser", "Loading finished")
+
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kkp.buddytrainer.presentation.startscreen.components.StartScreenSurface
 
 @Composable
 fun StartScreen(
@@ -19,7 +20,8 @@ fun StartScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-//            TODO("Create Start Screen")
+        StartScreenSurface()
+
         }
 
     }
