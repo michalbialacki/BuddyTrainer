@@ -1,6 +1,7 @@
 package com.kkp.buddytrainer.data.network
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.IGNORE
 import com.kkp.buddytrainer.core.Constants.PERSON_TABLE
 import com.kkp.buddytrainer.domain.model.Person
 import kotlinx.coroutines.flow.Flow
@@ -11,9 +12,9 @@ interface PersonDAO {
     fun getBuddies() : Flow<List<Person>>
 
     @Query("SELECT * FROM $PERSON_TABLE WHERE id = :id")
-    fun getPerson(id : Int) : Flow<Person>
+    fun getPerson(id : Long) : Flow<Person>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = IGNORE)
     fun addBuddy(buddy: Person)
 
     @Delete

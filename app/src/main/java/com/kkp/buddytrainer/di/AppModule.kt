@@ -25,6 +25,7 @@ class AppModule {
         PersonDb::class.java,
         PERSON_TABLE
     ).fallbackToDestructiveMigration()
+        .allowMainThreadQueries()
         .build()
 
     @Provides

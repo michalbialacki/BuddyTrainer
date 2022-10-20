@@ -10,7 +10,7 @@ class PersonRepositoryImpl(
 ) : PersonRepository {
     override suspend fun getBuddiesFromRoom(): Flow<List<Person>> = personDAO.getBuddies()
 
-    override suspend fun getPersonFromRoom(id : Int): Flow<Person> = personDAO.getPerson(id)
+    override suspend fun getPersonFromRoom(id : Long): Flow<Person> = personDAO.getPerson(id)
 
     override suspend fun addBuddyToRoom(person: Person) = personDAO.addBuddy(person)
 

@@ -6,7 +6,7 @@ import com.kkp.buddytrainer.domain.model.Person
 
 @Database(
     entities = [Person::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class PersonDb() : RoomDatabase(){

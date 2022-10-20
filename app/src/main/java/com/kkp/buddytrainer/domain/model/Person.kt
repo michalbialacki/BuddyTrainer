@@ -6,10 +6,10 @@ import com.kkp.buddytrainer.core.Constants.PERSON_TABLE
 
 @Entity(tableName = PERSON_TABLE)
 data class Person(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val id : Long,
     var Bench : Float,
     var Squat : Float,
     var Deadlift : Float,
     val Name : String,
-    val id : Long
 )

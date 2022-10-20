@@ -12,12 +12,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.kkp.buddytrainer.domain.model.Person
+import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
 
 @Composable
-fun TopBar() {
+fun TopBar(
+    viewModel: StartScreenViewModel = hiltViewModel()
+) {
     val soloSwitch = remember {
         mutableStateOf(false)
     }
+
+    val temp = Person(
+        Bench = 100f,
+        Squat = 80f,
+        Deadlift = 100f,
+        Name = "Piotr Kalisz",
+        id = 123456790L
+    )
+
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -30,7 +44,7 @@ fun TopBar() {
                 .weight(1f)
                 .padding(16.dp),
             contentAlignment = Alignment.CenterStart){
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { viewModel.addBuddy(temp)}) {
                 Text(text = "Inputs")
             }
         }

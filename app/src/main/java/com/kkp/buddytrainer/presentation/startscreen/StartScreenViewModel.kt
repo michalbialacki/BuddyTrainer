@@ -2,16 +2,16 @@ package com.kkp.buddytrainer.presentation.startscreen
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkp.buddytrainer.domain.model.Person
 import com.kkp.buddytrainer.domain.repository.PersonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -21,39 +21,52 @@ class StartScreenViewModel @Inject constructor(
     private val personRepo : PersonRepository
 )
     : ViewModel() {
-        private val temp = mutableListOf<String>()
-        private val dummy = Person(0f,0f,0f,"",0)
+
+        private val dummy = Person(
+            id = 0L,
+            Bench = 0f,
+            Squat = 0f,
+            Deadlift = 0f,
+            Name = ""
+        )
         var mainUser : MutableState<Person> = mutableStateOf(dummy)
-        var isLoading = mutableStateOf(true)
-        var buddiesList = mutableListOf<Person>()
+        var isLoading = mutableStateOf(false)
+        var buddiesList = mutableStateOf<List<Person>>(emptyList<Person>())
         var errorOccurred = mutableStateOf(false)
 
+
         init {
-            getUser()
+            getUsers()
         }
 
 
-    fun getUser() {
-        viewModelScope.launch {
-            if(isLoading.value){
-                try {
-                    personRepo.getBuddiesFromRoom().collect{
-                        buddiesList = it.toMutableList()
-                        if(buddiesList.isNotEmpty()){
-                            mainUser.value = buddiesList.find { it.id == 213742069L } ?: dummy
-                            buddiesList.remove(mainUser.value)
-                        }
-                        isLoading.value = false
-                    }
-                } catch (e:Exception){
-                    Log.d("GetUsers", "Users not found; $e")
-                    errorOccurred.value = true
+    fun getUsers() = viewModelScope.launch(){
+        isLoading.value = true
+        try {
+            personRepo.getBuddiesFromRoom().collect {
+                val tempMap = it.mapIndexed { index, person ->
+                    person
                 }
-            }else{
-                Log.d("GetMainUser", "Loading finished")
-
+                buddiesList.value = tempMap
+                if(buddiesList.value.isNotEmpty()){
+                    mainUser.value = buddiesList.value.find { it.id == 213742069L } ?: dummy
+                    val mainUserIndex = buddiesList.value.indexOf(mainUser.value)
+                    buddiesList.value = buddiesList.value.minus(mainUser.value)
+                    Log.d("ListState", "selectMainUser: ${mainUser.value}")
+                }
+                Log.d("BuddyList", "getUsers: ${buddiesList.value}")
+                isLoading.value = false
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main){
+                errorOccurred.value = true
+                Log.d("GetUsers", "Users not found; $e")
             }
         }
     }
+
+    fun addBuddy(person : Person) = viewModelScope.launch(Dispatchers.IO) {
+            personRepo.addBuddyToRoom(person)
+        }
 
 }
