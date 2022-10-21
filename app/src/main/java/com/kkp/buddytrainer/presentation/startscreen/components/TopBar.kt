@@ -1,5 +1,6 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -7,30 +8,27 @@ import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kkp.buddytrainer.domain.model.Person
+import androidx.navigation.NavController
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
 
 @Composable
 fun TopBar(
-    viewModel: StartScreenViewModel = hiltViewModel()
+    viewModel: StartScreenViewModel = hiltViewModel(),
+    navController: NavController
 ) {
-    val soloSwitch = remember {
-        mutableStateOf(false)
+    var soloSwitch by remember {
+        mutableStateOf(viewModel.soloTrainingSwitch)
     }
-
-    val temp = Person(
-        Bench = 100f,
-        Squat = 80f,
-        Deadlift = 100f,
-        Name = "Piotr Kalisz",
-        id = 123456790L
-    )
+    val trainingBuddyId by remember{
+        mutableStateOf(viewModel.selectedBuddy)
+    }
 
     Row (
         modifier = Modifier
@@ -44,7 +42,13 @@ fun TopBar(
                 .weight(1f)
                 .padding(16.dp),
             contentAlignment = Alignment.CenterStart){
-            Button(onClick = { viewModel.addBuddy(temp)}) {
+            Button(onClick = {
+                if(soloSwitch.value){
+                    navController.navigate("InputsScreen/${404L}")
+                }else{
+                    navController.navigate("InputsScreen/${trainingBuddyId.value.id}")
+                }
+            }) {
                 Text(text = "Inputs")
             }
         }
@@ -54,7 +58,10 @@ fun TopBar(
                 .padding(16.dp),
             contentAlignment = Alignment.CenterEnd
         ){
-            Switch(checked = soloSwitch.value, onCheckedChange = {soloSwitch.value = it} )
+            Switch(checked = soloSwitch.value, onCheckedChange = {
+                viewModel.switchBuddySwitch()
+
+            } )
         }
 
     }

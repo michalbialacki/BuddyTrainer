@@ -20,7 +20,7 @@ fun StartScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-        StartScreenSurface()
+        StartScreenSurface(navController)
 
         }
 

@@ -17,50 +17,52 @@ fun BuddySelect(
     viewModel: StartScreenViewModel = hiltViewModel()
 ) {
     val expanded = remember{ mutableStateOf(false) }
-    var buddiesList = remember {viewModel.buddiesList}
+    val buddiesList = remember {viewModel.buddiesList}
     var selectedIndex by remember { mutableStateOf(0) }
-    var checkedText by remember { mutableStateOf("Choose your buddy") }
-    var isLoading by remember { viewModel.isLoading}
-    var errorOccurred by remember {viewModel.errorOccurred}
+    var selectedBudyName by remember { mutableStateOf(viewModel.selectedBuddy.value.Name) }
+    val isLoading by remember { viewModel.isLoading}
+    val errorOccurred by remember {viewModel.errorOccurred}
     var mainUser by remember {viewModel.mainUser}
+    var soloTrainingSwitch by remember {viewModel.soloTrainingSwitch}
 
 
-
-    if (isLoading){
-        CircularProgressIndicator(color = MaterialTheme.colors.primary)
-    }
-    else if(!errorOccurred){
-        Button(onClick = { expanded.value = !expanded.value }) {
-            if (buddiesList.value.size > 0){
-                Text(text = checkedText)
-                DropdownMenu(
-                    expanded = expanded.value,
-                    onDismissRequest = { expanded.value = false },
-                    modifier = Modifier
-                        .fillMaxWidth(0.6f)
-                        .background(
-                            Color.Red
-                        )
-                ){
-                    buddiesList.value.forEachIndexed { index, item ->
-                        DropdownMenuItem(onClick = {
-                            selectedIndex = index
-                            expanded.value = false
-                            checkedText = item.Name
-                        }) {
-                            Text(text = item.Name)
+    when(isLoading){
+        true -> {
+            CircularProgressIndicator(color = MaterialTheme.colors.primary)
+        }
+        false && !errorOccurred -> {
+            Button(onClick = { expanded.value = !expanded.value }) {
+                if (buddiesList.value.size > 0 && !soloTrainingSwitch){
+                    Text(text = selectedBudyName)
+                    DropdownMenu(
+                        expanded = expanded.value,
+                        onDismissRequest = { expanded.value = false },
+                        modifier = Modifier
+                            .fillMaxWidth(0.6f)
+                            .background(
+                                Color.Red
+                            )
+                    ){
+                        buddiesList.value.forEachIndexed { index, item ->
+                            DropdownMenuItem(onClick = {
+                                selectedIndex = index
+                                expanded.value = false
+                                selectedBudyName = item.Name
+                                viewModel.buddySelected(item)
+                            }) {
+                                Text(text = item.Name)
+                            }
                         }
                     }
+                }else{
+                    Text(text = "Find a buddy to train with!")
                 }
-            }else{
-                Text(text = "Find a buddy to train with!")
+            }
+            Spacer(modifier = Modifier.size(120.dp))
+            Button(onClick = { /*TODO()*/}) {
+                Text(text = "Start the workout of the day!")
             }
         }
-        Spacer(modifier = Modifier.size(120.dp))
-        Button(onClick = { /*TODO()*/}) {
-            Text(text = "Start the workout of the day!")
-        }
-    } else{
-        Text(text = "Error occurred. Reopen the app")
+        else -> Text(text = "Error occurred!")
     }
 }

@@ -2,7 +2,6 @@ package com.kkp.buddytrainer.presentation.startscreen
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,6 @@ import com.kkp.buddytrainer.domain.repository.PersonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -23,7 +21,7 @@ class StartScreenViewModel @Inject constructor(
     : ViewModel() {
 
         private val dummy = Person(
-            id = 0L,
+            id = 404L,
             Bench = 0f,
             Squat = 0f,
             Deadlift = 0f,
@@ -33,6 +31,10 @@ class StartScreenViewModel @Inject constructor(
         var isLoading = mutableStateOf(false)
         var buddiesList = mutableStateOf<List<Person>>(emptyList<Person>())
         var errorOccurred = mutableStateOf(false)
+        var soloTrainingSwitch = mutableStateOf(false)
+        var selectedBuddy : MutableState<Person> = mutableStateOf(dummy.copy(
+            Name = "Choose your buddy!"
+        ))
 
 
         init {
@@ -65,8 +67,15 @@ class StartScreenViewModel @Inject constructor(
         }
     }
 
-    fun addBuddy(person : Person) = viewModelScope.launch(Dispatchers.IO) {
-            personRepo.addBuddyToRoom(person)
+    fun switchBuddySwitch(){
+        viewModelScope.launch(Dispatchers.IO) {
+            soloTrainingSwitch.value = !soloTrainingSwitch.value
         }
+    }
 
+    fun buddySelected(person: Person){
+        viewModelScope.launch(Dispatchers.IO) {
+            selectedBuddy.value = person
+        }
+    }
 }
