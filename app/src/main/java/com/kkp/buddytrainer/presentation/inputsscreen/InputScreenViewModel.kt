@@ -6,7 +6,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kkp.buddytrainer.domain.model.Bench
+import com.kkp.buddytrainer.domain.model.Deadlift
 import com.kkp.buddytrainer.domain.model.Person
+import com.kkp.buddytrainer.domain.model.Squat
 import com.kkp.buddytrainer.domain.repository.PersonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +25,22 @@ class InputScreenViewModel @Inject constructor(
 
     val mainUser : MutableState<Person> = mutableStateOf<Person>(Person())
     val buddyUser : MutableState<Person> = mutableStateOf<Person>(Person())
+
+
     var isLoading = mutableStateOf(false)
     var errorOccurred = mutableStateOf(false)
 
 
 
+    fun updateBench(bench: Bench) = viewModelScope.launch(Dispatchers.IO) {
+        personRepo.updateBench(bench)
+    }
+    fun updateSquat(squat: Squat) = viewModelScope.launch(Dispatchers.IO) {
+        personRepo.updateSquat(squat)
+    }
+    fun updateDeadlift(deadlift: Deadlift) = viewModelScope.launch(Dispatchers.IO) {
+        personRepo.updateDeadlift(deadlift)
+    }
 
     fun getUsers(personId : Long) = viewModelScope.launch(Dispatchers.IO) {
         isLoading.value = true
@@ -41,7 +55,6 @@ class InputScreenViewModel @Inject constructor(
                 personRepo.getPersonFromRoom(213742069L).collect {
                     mainUser.value = it
                     isLoading.value = false
-                    Log.d("MainUserCheck", "${mainUser.value}")
                 }
             }
         }catch (e:Exception){

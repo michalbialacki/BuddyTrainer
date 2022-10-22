@@ -1,7 +1,10 @@
 package com.kkp.buddytrainer.data.repository
 
 import com.kkp.buddytrainer.data.network.PersonDAO
+import com.kkp.buddytrainer.domain.model.Bench
+import com.kkp.buddytrainer.domain.model.Deadlift
 import com.kkp.buddytrainer.domain.model.Person
+import com.kkp.buddytrainer.domain.model.Squat
 import com.kkp.buddytrainer.domain.repository.PersonRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -15,4 +18,11 @@ class PersonRepositoryImpl(
     override suspend fun addBuddyToRoom(person: Person) = personDAO.addBuddy(person)
 
     override suspend fun deleteBuddyFromRoom(person: Person) = personDAO.deleteBuddy(person)
+
+    override suspend fun updateBench(bench: Bench) = personDAO.updateBenchPR(bench)
+
+    override suspend fun updateDeadlift(deadlift: Deadlift) = personDAO.updateDeadliftPR(deadlift)
+
+    override suspend fun updateSquat(squat: Squat) = personDAO.updateSquatPR(squat)
+
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kkp.buddytrainer.presentation.inputsscreen.InputScreenViewModel
 import com.kkp.buddytrainer.presentation.startscreen.components.BuddySelect
+import com.kkp.buddytrainer.ui.theme.Teal200
 
 @Composable
 fun UsersInputs(
@@ -33,56 +34,27 @@ fun UsersInputs(
     Surface(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxSize()){
             if(!isLoading){
-                /*if (userId == 404L){
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                            .background(Color.Magenta),
-                        verticalArrangement = Arrangement.Center
-                    ){
-                        Text(text = mainUser.Name, color = Color.Yellow)
-                    }
-                }else{
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                            .background(Color.Magenta),
-                        verticalArrangement = Arrangement.Center
-                    ){
-                        Text(text = mainUser.Name, color = Color.Yellow)
-                    }
-                    Column(
-                        modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                        .background(Color.Cyan),
-                        verticalArrangement = Arrangement.Center
-                    ){
-                        Text(text = buddyUser.Name, color = Color.Yellow)
-                    }
-                } */
-
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
                         .weight(1f)
                         .background(Color.Magenta),
                     verticalArrangement = Arrangement.Center
                 ){
                     EditInputs(person = mainUser)
                 }
-                Box(
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(0.4f)
-                        .padding(16.dp)
-                )
+                        .weight(0.5f)
+                        .background(Teal200),
+                    verticalArrangement = Arrangement.Center
+                ){
+                    Spacer(modifier = Modifier.size(25.dp))
+                    ExerciseNamesColumn()
+                }
                 if (userId != 404L){
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
                             .weight(1f)
                             .background(Color.Red),
                         verticalArrangement = Arrangement.Center

@@ -13,3 +13,19 @@ data class Person(
     var Deadlift : Float = 100f,
     val Name : String = "",
 )
+
+
+data class Bench(
+    val id : Long = 1,
+    val Bench : Float
+)
+
+data class Squat(
+    val id : Long = 1,
+    val Squat : Float
+)
+
+data class Deadlift(
+    val id : Long = 1,
+    val Deadlift : Float
+)

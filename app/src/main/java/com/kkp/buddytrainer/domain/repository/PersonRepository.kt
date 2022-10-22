@@ -1,6 +1,9 @@
 package com.kkp.buddytrainer.domain.repository
 
+import com.kkp.buddytrainer.domain.model.Bench
+import com.kkp.buddytrainer.domain.model.Deadlift
 import com.kkp.buddytrainer.domain.model.Person
+import com.kkp.buddytrainer.domain.model.Squat
 import kotlinx.coroutines.flow.Flow
 
 interface PersonRepository {
@@ -8,4 +11,8 @@ interface PersonRepository {
     suspend fun getPersonFromRoom(id : Long) : Flow<Person>
     suspend fun addBuddyToRoom(person: Person)
     suspend fun deleteBuddyFromRoom(person: Person)
+    suspend fun updateBench(bench: Bench)
+    suspend fun updateDeadlift(deadlift: Deadlift)
+    suspend fun updateSquat(squat: Squat)
+
 }

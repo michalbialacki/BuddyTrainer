@@ -1,106 +1,92 @@
 package com.kkp.buddytrainer.presentation.inputsscreen.components
 
 import android.widget.Toast
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kkp.buddytrainer.domain.model.Person
-import com.kkp.buddytrainer.ui.theme.BuddyTrainerTheme
-import java.lang.NumberFormatException
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.kkp.buddytrainer.presentation.inputsscreen.InputScreenViewModel
 
 @Composable
 fun SDBTextfield(
     exerciseRecordValue : Float,
+    updateUser : (Float) -> Unit
 ) {
     var exerciseRecordValueLocal = exerciseRecordValue
     var text by remember {
         mutableStateOf(TextFieldValue(exerciseRecordValueLocal.toString()))
     }
+    var cachedText = text
     val context = LocalContext.current
-    Box{
+    var localFocus = LocalFocusManager.current
+    val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Box(
+        modifier = Modifier
+            .padding(4.dp),
+        contentAlignment = Alignment.Center){
         Row (
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            Box(modifier = Modifier.weight(0.5f))  {
-                /*"minus" icon*/
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Reduce weight",
-                    modifier = Modifier
-                        .pointerInput(Unit){
-                            detectTapGestures(
-                                onTap = {
-                                    when(exerciseRecordValueLocal){
-                                        in (0.5f..500.0f) -> exerciseRecordValueLocal -= 0.5f
-                                        else -> Toast.makeText(context,"Input real weight",Toast.LENGTH_SHORT).show()
-                                    }
-                            }
-                        )
-                        }
-                    )
-            }
             TextField(
                 value = text ,
                 onValueChange = {changedText ->
-                    try {
-                        if (changedText.text.toFloat() in(0.5f..500f)){
-                            text = changedText
-                        }else{
-                            text = text
-                        }
-                    }catch (e:NumberFormatException){
-                        text = TextFieldValue(0f.toString())
-                    }
+                    cachedText = text
+                    text = changedText
                 },
                 modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(10.dp)),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
-            )
-            /*TODO(Get this logic straight.)*/
-            Box(modifier = Modifier.weight(0.5f)){
-                /*"plus" icon*/
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Add weight",
-                    modifier = Modifier
-                        .pointerInput(Unit){
-                            detectTapGestures(
-                                onTap = {
-                                    when(exerciseRecordValueLocal){
-                                        in (0.0f..500.0f) -> exerciseRecordValueLocal += 0.5f
-                                        else -> Toast.makeText(context,"Input real weight",Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            )
+                    .width(80.dp)
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .onFocusChanged {
+
+                    },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, keyboardType = KeyboardType.Number),
+                keyboardActions = KeyboardActions(onDone = {
+                    try {
+                        if("," in text.text){
+                            val temp = text.text.replace(",",".")
+                            text = TextFieldValue(temp)
                         }
-                    )
-            }
+                        val newPersonalRecord = text.text.toFloat()
+                        Toast.makeText(
+                            context,
+                            "Congrats! New PR is $newPersonalRecord",
+                            Toast.LENGTH_SHORT).show()
+                        updateUser(newPersonalRecord)
+                    }catch (e:NumberFormatException){
+                        text = cachedText
+                        Toast.makeText(context,"Treat this rivalry seriously!",Toast.LENGTH_SHORT).show()
+                    }
+                    focusManager.clearFocus()
+                }),
+                textStyle = LocalTextStyle.current.copy(
+                    textAlign = TextAlign.Center,
+                    fontSize = 12.sp
+                ),
+            )
         }
     }
 }
