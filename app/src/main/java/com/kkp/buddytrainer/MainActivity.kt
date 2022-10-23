@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kkp.buddytrainer.inputsscreen.presentation.InputsScreen
+import com.kkp.buddytrainer.presentation.addbuddyscreen.AddBuddyScreen
 import com.kkp.buddytrainer.presentation.startscreen.StartScreen
 import com.kkp.buddytrainer.ui.theme.BuddyTrainerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,6 +47,9 @@ class MainActivity : ComponentActivity() {
                         InputsScreen(
                             navController = navController,
                             buddyId = buddyId ?: 404L)
+                    }
+                    composable("AddBuddyScreen"){
+                        AddBuddyScreen(navController = navController)
                     }
                 }
             }

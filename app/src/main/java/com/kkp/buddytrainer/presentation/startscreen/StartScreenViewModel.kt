@@ -78,4 +78,7 @@ class StartScreenViewModel @Inject constructor(
             selectedBuddy.value = person
         }
     }
+    fun deleteBuddy(person: Person) = viewModelScope.launch(Dispatchers.IO) {
+        personRepo.deleteBuddyFromRoom(person = person)
+    }
 }

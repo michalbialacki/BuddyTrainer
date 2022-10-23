@@ -9,11 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
 
 @Composable
 fun ChooseBuddySurface(
-    viewModel: StartScreenViewModel = hiltViewModel()
+    viewModel: StartScreenViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -33,7 +35,7 @@ fun ChooseBuddySurface(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
             ){
-                AddBudd()
+                AddBudd(navController = navController)
         }
     }
 }

@@ -24,7 +24,7 @@ fun StartScreenSurface(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             TopBar(navController = navController)
-            ChooseBuddySurface()
+            ChooseBuddySurface(navController = navController)
         }
 
     }

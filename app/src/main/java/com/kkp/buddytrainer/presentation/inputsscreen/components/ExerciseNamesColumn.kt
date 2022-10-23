@@ -15,7 +15,7 @@ import com.kkp.buddytrainer.ui.theme.Teal200
 
 @Composable
 fun ExerciseNamesColumn() {
-    androidx.compose.material.Surface {
+    Surface {
         Column(
             modifier = Modifier.fillMaxHeight(0.5f).background(Teal200).padding(
                 start = 12.dp,

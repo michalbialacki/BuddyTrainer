@@ -63,14 +63,14 @@ fun EditInputs(
 
 
             SDBTextfield(exerciseRecordValue = person.Bench){
-                    viewModel.updateBench(Bench(id = person.id,Bench = it))
-                }
-                SDBTextfield(exerciseRecordValue = person.Squat){
-                    viewModel.updateSquat(Squat(id = person.id, Squat = it))
-                }
-                SDBTextfield(exerciseRecordValue = person.Deadlift){
-                    viewModel.updateDeadlift(Deadlift(id = person.id, Deadlift = it))
-                }
+                viewModel.updateBench(Bench(id = person.id,Bench = it))
+            }
+            SDBTextfield(exerciseRecordValue = person.Squat){
+                viewModel.updateSquat(Squat(id = person.id, Squat = it))
+            }
+            SDBTextfield(exerciseRecordValue = person.Deadlift){
+                viewModel.updateDeadlift(Deadlift(id = person.id, Deadlift = it))
+            }
         }
     }
 

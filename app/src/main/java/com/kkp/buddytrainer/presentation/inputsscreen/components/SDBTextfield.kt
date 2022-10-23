@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
@@ -50,12 +51,14 @@ fun SDBTextfield(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            TextField(
+            BasicTextField(
                 value = text ,
                 onValueChange = {changedText ->
                     cachedText = text
                     text = changedText
                 },
+                maxLines = 1,
+                singleLine = true,
                 modifier = Modifier
                     .width(80.dp)
                     .height(50.dp)
@@ -70,15 +73,17 @@ fun SDBTextfield(
                             val temp = text.text.replace(",",".")
                             text = TextFieldValue(temp)
                         }
-                        val newPersonalRecord = text.text.toFloat()
-                        Toast.makeText(
-                            context,
-                            "Congrats! New PR is $newPersonalRecord",
-                            Toast.LENGTH_SHORT).show()
-                        updateUser(newPersonalRecord)
+                        val newBudPR = text.text.toFloat()
+                        if (newBudPR in (0f..600f)){
+                            text = TextFieldValue(newBudPR.toString())
+                            updateUser(newBudPR)
+                        }else{
+                            text = cachedText
+                            Toast.makeText(context,"Try to put a real PR next time!", Toast.LENGTH_SHORT).show()
+                        }
                     }catch (e:NumberFormatException){
                         text = cachedText
-                        Toast.makeText(context,"Treat this rivalry seriously!",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,"Try to put a real PR next time!", Toast.LENGTH_SHORT).show()
                     }
                     focusManager.clearFocus()
                 }),

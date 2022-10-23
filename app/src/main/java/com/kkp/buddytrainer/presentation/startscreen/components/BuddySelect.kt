@@ -1,6 +1,8 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -8,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
@@ -24,6 +28,7 @@ fun BuddySelect(
     val errorOccurred by remember {viewModel.errorOccurred}
     var mainUser by remember {viewModel.mainUser}
     var soloTrainingSwitch by remember {viewModel.soloTrainingSwitch}
+    val context = LocalContext.current
 
 
     when(isLoading){
@@ -44,13 +49,23 @@ fun BuddySelect(
                             )
                     ){
                         buddiesList.value.forEachIndexed { index, item ->
-                            DropdownMenuItem(onClick = {
+                            DropdownMenuItem(
+                                onClick = {
                                 selectedIndex = index
                                 expanded.value = false
                                 selectedBudyName = item.Name
                                 viewModel.buddySelected(item)
-                            }) {
-                                Text(text = item.Name)
+                                },
+                            ) {
+                                Text(text = item.Name,
+                                    /*modifier = Modifier.pointerInput(Unit){
+                                    detectTapGestures (
+                                        onLongPress = {
+                                            Toast.makeText(context,"Here",Toast.LENGTH_SHORT).show()
+                                            viewModel.deleteBuddy(item) }
+                                    )
+                                }*/
+                                )
                             }
                         }
                     }
