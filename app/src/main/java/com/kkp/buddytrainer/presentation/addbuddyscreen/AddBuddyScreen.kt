@@ -11,6 +11,5 @@ fun AddBuddyScreen(
 ) {
     Surface {
         BuddyCreation()
-
     }
 }

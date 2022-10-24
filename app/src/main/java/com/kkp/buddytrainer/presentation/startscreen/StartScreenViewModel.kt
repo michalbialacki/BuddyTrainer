@@ -35,11 +35,12 @@ class StartScreenViewModel @Inject constructor(
         var selectedBuddy : MutableState<Person> = mutableStateOf(dummy.copy(
             Name = "Choose your buddy!"
         ))
+        private var buddyListSize : MutableState<Int> = mutableStateOf(0)
 
 
-        init {
-            getUsers()
-        }
+//        init {
+//            getUsers()
+//        }
 
 
     fun getUsers() = viewModelScope.launch(){
@@ -54,9 +55,8 @@ class StartScreenViewModel @Inject constructor(
                     mainUser.value = buddiesList.value.find { it.id == 213742069L } ?: dummy
                     val mainUserIndex = buddiesList.value.indexOf(mainUser.value)
                     buddiesList.value = buddiesList.value.minus(mainUser.value)
-                    Log.d("ListState", "selectMainUser: ${mainUser.value}")
                 }
-                Log.d("BuddyList", "getUsers: ${buddiesList.value}")
+                buddyListSize.value = buddiesList.value.size
                 isLoading.value = false
             }
         } catch (e: Exception) {
@@ -66,7 +66,6 @@ class StartScreenViewModel @Inject constructor(
             }
         }
     }
-
     fun switchBuddySwitch(){
         viewModelScope.launch(Dispatchers.IO) {
             soloTrainingSwitch.value = !soloTrainingSwitch.value

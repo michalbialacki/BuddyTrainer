@@ -21,7 +21,7 @@ fun BuddySelect(
     viewModel: StartScreenViewModel = hiltViewModel()
 ) {
     val expanded = remember{ mutableStateOf(false) }
-    val buddiesList = remember {viewModel.buddiesList}
+    val buddiesList by remember {viewModel.buddiesList}
     var selectedIndex by remember { mutableStateOf(0) }
     var selectedBudyName by remember { mutableStateOf(viewModel.selectedBuddy.value.Name) }
     val isLoading by remember { viewModel.isLoading}
@@ -36,8 +36,11 @@ fun BuddySelect(
             CircularProgressIndicator(color = MaterialTheme.colors.primary)
         }
         false && !errorOccurred -> {
-            Button(onClick = { expanded.value = !expanded.value }) {
-                if (buddiesList.value.size > 0 && !soloTrainingSwitch){
+            Button(onClick = {
+                viewModel.getUsers()
+                expanded.value = !expanded.value
+            }) {
+                if (buddiesList.size > 0 && !soloTrainingSwitch){
                     Text(text = selectedBudyName)
                     DropdownMenu(
                         expanded = expanded.value,
@@ -48,7 +51,7 @@ fun BuddySelect(
                                 Color.Red
                             )
                     ){
-                        buddiesList.value.forEachIndexed { index, item ->
+                        buddiesList.forEachIndexed { index, item ->
                             DropdownMenuItem(
                                 onClick = {
                                 selectedIndex = index

@@ -1,6 +1,9 @@
 package com.kkp.buddytrainer.presentation.addbuddyscreen.components
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -32,15 +36,40 @@ fun BuddyParameterTextInput(
     }
     var cachedText = text
     val context = LocalContext.current
-    var localFocus = LocalFocusManager.current
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     var isHintDisplayed by remember {
         mutableStateOf(parName !="")
     }
+    val focusRequester = remember { FocusRequester() }
+    var textFieldFocus by remember { mutableStateOf(false)}
 
 
     TextField(
+        modifier = Modifier
+            .onFocusChanged {
+                if(!it.isFocused && !text.text.isNullOrEmpty()){
+                    try {
+                        if("," in text.text){
+                            val temp = text.text.replace(",",".")
+                            text = TextFieldValue(temp)
+                        }
+                        val newBudPR = text.text.toFloat()
+                        if (newBudPR in (0f..600f)){
+                            text = TextFieldValue(newBudPR.toString())
+                            onSave(newBudPR)
+                        }else{
+                            text = cachedText
+                            Toast.makeText(context,"Try to put a real PR next time!", Toast.LENGTH_SHORT).show()
+                            text = TextFieldValue("")
+                        }
+                    }catch (e:NumberFormatException){
+                        text = cachedText
+                        Toast.makeText(context,"Try to put a real PR next time!", Toast.LENGTH_SHORT).show()
+                        text = TextFieldValue("")
+                    }
+                }
+            },
         value = text,
         onValueChange = { changedText ->
             cachedText = text
@@ -62,13 +91,15 @@ fun BuddyParameterTextInput(
                 }else{
                     text = cachedText
                     Toast.makeText(context,"Try to put a real PR next time!", Toast.LENGTH_SHORT).show()
+                    text = TextFieldValue("")
                 }
             }catch (e:NumberFormatException){
                 text = cachedText
                 Toast.makeText(context,"Try to put a real PR next time!", Toast.LENGTH_SHORT).show()
+                text = TextFieldValue("")
             }
             focusManager.clearFocus()
-        }, ),
+        }),
         label = {
             Text(text = parName, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         },
