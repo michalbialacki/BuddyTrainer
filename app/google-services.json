@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "831951435411",
+    "firebase_url": "https://buddytrainer-b54d4-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "buddytrainer-b54d4",
+    "storage_bucket": "buddytrainer-b54d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831951435411:android:3d9518da305a261a66bf66",
+        "android_client_info": {
+          "package_name": "com.kkp.buddytrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831951435411-dpujokes6ekn8pilmonf3p836citl90m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kkp.buddytrainer",
+            "certificate_hash": "f31a05c25585063fadd1bc3fd5af607d41b4a203"
+          }
+        },
+        {
+          "client_id": "831951435411-5ojvfi1hklaip3gm6pubea3j0759ssjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJxU4LUO--3CBbbblNDIRNYLavI6nPVbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831951435411-5ojvfi1hklaip3gm6pubea3j0759ssjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,9 +24,7 @@ import com.kkp.buddytrainer.ui.theme.Teal200
 fun BuddyCreation(
     viewModel : AddBuddyViewModel = hiltViewModel()
 ) {
-
     val context = LocalContext.current
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

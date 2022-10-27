@@ -5,6 +5,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.kkp.buddytrainer.core.Resource
+import com.kkp.buddytrainer.domain.model.Exercise
 import com.kkp.buddytrainer.domain.model.Person
 import com.kkp.buddytrainer.domain.repository.PersonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +26,9 @@ class StartScreenViewModel @Inject constructor(
     private val personRepo : PersonRepository
 )
     : ViewModel() {
+
+    private val database = Firebase.database("https://buddytrainer-b54d4-default-rtdb.europe-west1.firebasedatabase.app")
+    private val myRef = database.getReference("Day1")
 
         private val dummy = Person(
             id = 404L,
@@ -36,6 +46,8 @@ class StartScreenViewModel @Inject constructor(
             Name = "Choose your buddy!"
         ))
         private var buddyListSize : MutableState<Int> = mutableStateOf(0)
+
+        var response : MutableState<Resource> = mutableStateOf(Resource.Empty())
 
 
 //        init {
@@ -79,5 +91,24 @@ class StartScreenViewModel @Inject constructor(
     }
     fun deleteBuddy(person: Person) = viewModelScope.launch(Dispatchers.IO) {
         personRepo.deleteBuddyFromRoom(person = person)
+    }
+
+    fun readFirebase(exercise: Exercise = Exercise()) = viewModelScope.launch(Dispatchers.IO) {
+
+        response.value = Resource.Loading
+        myRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var temp = mutableListOf<Exercise>()
+                for(item in snapshot.children){
+                    temp.add(item.getValue(Exercise::class.java)!!)
+                }
+
+                response.value = Resource.Success(temp)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                response.value = Resource.Failure(error.toString())
+            }
+        })
     }
 }

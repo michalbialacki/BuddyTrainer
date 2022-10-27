@@ -1,8 +1,8 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -10,11 +10,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kkp.buddytrainer.core.Resource
+import com.kkp.buddytrainer.domain.model.Exercise
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
+import java.lang.reflect.Type
 
 @Composable
 fun BuddySelect(
@@ -29,6 +31,30 @@ fun BuddySelect(
     var mainUser by remember {viewModel.mainUser}
     var soloTrainingSwitch by remember {viewModel.soloTrainingSwitch}
     val context = LocalContext.current
+    var firebaseResponse by remember {viewModel.response}
+
+
+    val dummyExe = Exercise(
+        name = "Deadlift",
+        multi = arrayListOf(0.6f,0.7f),
+        reps = arrayListOf("8","6")
+    )
+
+    when(firebaseResponse){
+        is Resource.Success ->{
+            Toast.makeText(context,"Success!",Toast.LENGTH_SHORT).show()
+        }
+        is Resource.Loading ->{
+            TODO("Circular progress bar")
+        }
+        is Resource.Failure -> {
+//            TODO("database error firebase")
+        }
+        is Resource.Empty ->{
+//            TODO("No data fetched")
+
+        }
+    }
 
 
     when(isLoading){
@@ -77,7 +103,7 @@ fun BuddySelect(
                 }
             }
             Spacer(modifier = Modifier.size(120.dp))
-            Button(onClick = { /*TODO()*/}) {
+            Button(onClick = { viewModel.readFirebase(dummyExe)}) {
                 Text(text = "Start the workout of the day!")
             }
         }
