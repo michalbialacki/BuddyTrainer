@@ -12,6 +12,7 @@ data class Person(
     var Squat : Float = 100f,
     var Deadlift : Float = 100f,
     val Name : String = "",
+    val trainingDay : Int = 0
 )
 
 

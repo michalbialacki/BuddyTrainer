@@ -19,6 +19,7 @@ import androidx.navigation.navArgument
 import com.kkp.buddytrainer.inputsscreen.presentation.InputsScreen
 import com.kkp.buddytrainer.presentation.addbuddyscreen.AddBuddyScreen
 import com.kkp.buddytrainer.presentation.startscreen.StartScreen
+import com.kkp.buddytrainer.presentation.trainingScreen.TrainingScreen
 import com.kkp.buddytrainer.ui.theme.BuddyTrainerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,6 +33,19 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "StartScreen"){
                     composable(route = "StartScreen"){
                         StartScreen(navController = navController)
+                    }
+                    composable(route = "TrainingScreen/{userTrainingDay}", arguments = listOf(
+                        navArgument("userTrainingDay"){
+                            type = NavType.IntType
+                        })
+                    ){
+                        val userTrainingDay = remember{
+                            it.arguments?.getInt("userTrainingDay")
+                        }
+                        TrainingScreen(
+                            navController = navController,
+                            userTrainingDay = userTrainingDay ?: 0
+                        )
                     }
                     composable(
                         route = "InputsScreen/{buddyId}",

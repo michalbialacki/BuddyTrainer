@@ -23,13 +23,13 @@ fun ChooseBuddySurface(
             .background(Color.Magenta),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                BuddySelect()
-            }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            BuddySelect(navController = navController)
+        }
         Column(
             modifier = Modifier.weight(0.5f),
             verticalArrangement = Arrangement.Bottom,

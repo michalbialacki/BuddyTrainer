@@ -27,8 +27,6 @@ class StartScreenViewModel @Inject constructor(
 )
     : ViewModel() {
 
-    private val database = Firebase.database("https://buddytrainer-b54d4-default-rtdb.europe-west1.firebasedatabase.app")
-    private val myRef = database.getReference("Day1")
 
         private val dummy = Person(
             id = 404L,
@@ -47,13 +45,23 @@ class StartScreenViewModel @Inject constructor(
         ))
         private var buddyListSize : MutableState<Int> = mutableStateOf(0)
 
-        var response : MutableState<Resource> = mutableStateOf(Resource.Empty())
 
 
-//        init {
-//            getUsers()
-//        }
 
+
+
+    fun addTestUser(){
+        viewModelScope.launch(Dispatchers.IO) {
+            personRepo.addBuddyToRoom(Person(
+                id = 213742069L,
+                Bench = 100f,
+                Squat = 120f,
+                Deadlift = 140f,
+                Name = "Piotr Nowak",
+                trainingDay = 0
+            ))
+        }
+    }
 
     fun getUsers() = viewModelScope.launch(){
         isLoading.value = true
@@ -93,22 +101,5 @@ class StartScreenViewModel @Inject constructor(
         personRepo.deleteBuddyFromRoom(person = person)
     }
 
-    fun readFirebase(exercise: Exercise = Exercise()) = viewModelScope.launch(Dispatchers.IO) {
 
-        response.value = Resource.Loading
-        myRef.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var temp = mutableListOf<Exercise>()
-                for(item in snapshot.children){
-                    temp.add(item.getValue(Exercise::class.java)!!)
-                }
-
-                response.value = Resource.Success(temp)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                response.value = Resource.Failure(error.toString())
-            }
-        })
-    }
 }

@@ -6,6 +6,6 @@ sealed class Resource{
     class Success (val data : MutableList<Exercise>) : Resource()
     class Failure (val error : String) : Resource()
     object Loading : Resource()
-    class Empty : Resource()
+    object Empty : Resource()
 
 }
