@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -24,7 +25,8 @@ import com.kkp.buddytrainer.presentation.trainingScreen.TrainingScreenViewModel
 fun ExerciseCard(
     exercise: Exercise,
     currentUser : Person,
-    viewModel: TrainingScreenViewModel = hiltViewModel()
+    viewModel: TrainingScreenViewModel = hiltViewModel(),
+    onExeSelected : () -> Unit,
 ) {
     var exerciseMaxPR = when(exercise.name){
         "Bench Press" -> {currentUser.Bench}
@@ -38,7 +40,7 @@ fun ExerciseCard(
     var reps by remember { mutableStateOf(exercise.reps!![index]) }
     var load by remember { mutableStateOf((exercise.multi!![index] * exerciseMaxPR)) }
     val context = LocalContext.current
-    androidx.compose.material.Surface {
+    Box(modifier = Modifier.background(Color.LightGray)) {
         Card(modifier = Modifier.pointerInput(Unit){
             detectTapGestures(
                 onDoubleTap = {
@@ -51,6 +53,9 @@ fun ExerciseCard(
                             Toast.makeText(context,"Good job!",Toast.LENGTH_SHORT).show()
                         }
                     }
+                },
+                onLongPress = {
+                    onExeSelected()
                 }
             )
         }) {

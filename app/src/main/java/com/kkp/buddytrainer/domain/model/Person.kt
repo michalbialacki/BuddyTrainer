@@ -15,6 +15,11 @@ data class Person(
     val trainingDay : Int = 0
 )
 
+data class TrainingDay(
+    val id : Long = 1,
+    val trainingDay: Int
+)
+
 
 data class Bench(
     val id : Long = 1,

@@ -29,7 +29,8 @@ fun TrainingScreen(
             when(response){
                 is Resource.Success ->{
                     val exerciseList = (response as Resource.Success).data
-                    ExerciseColumn(response = exerciseList)
+                    ExerciseColumn(response = exerciseList, navController = navController)
+                    viewModel.cacheList((response as Resource.Success).data)
                 }
                 is Resource.Loading -> CircularProgressIndicator(color = MaterialTheme.colors.primaryVariant)
                 is Resource.Empty -> {

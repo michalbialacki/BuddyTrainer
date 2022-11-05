@@ -2,6 +2,7 @@ package com.kkp.buddytrainer.presentation.trainingScreen
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.kkp.buddytrainer.core.Resource
 import com.kkp.buddytrainer.domain.model.Exercise
 import com.kkp.buddytrainer.domain.model.Person
+import com.kkp.buddytrainer.domain.model.TrainingDay
 import com.kkp.buddytrainer.domain.repository.PersonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,36 +27,45 @@ class TrainingScreenViewModel @Inject constructor(
     private val personRepo : PersonRepository
 ) : ViewModel() {
 
-    private var mainUser : MutableState<Person> = mutableStateOf(Person(trainingDay = 1))
+    private var mainUser : MutableState<Person> = mutableStateOf(Person(trainingDay = 0))
     private val database = Firebase.database("https://buddytrainer-b54d4-default-rtdb.europe-west1.firebasedatabase.app/")
     var response : MutableState<Resource> = mutableStateOf(Resource.Empty)
     var index : MutableState<Int> = mutableStateOf(0)
+    var cachedExerciseList = mutableStateListOf<Exercise>()
+    var initialSize : MutableState<Int> = mutableStateOf(0)
 
 
     init {
         fetchMainUser()
     }
 
-    fun updateIndex() = viewModelScope.launch(Dispatchers.IO) {
-        when(index.value){
-            in (0..2) -> {
-                index.value ++
-            }
-            else -> {
-                index.value = 0
-            }
-        }
-        Log.d("Check", "${index.value}")
-    }
 
     fun getMainUser() : Person{
         return mainUser.value
     }
 
+    fun updateMainUserTrainingDay() = viewModelScope.launch(Dispatchers.IO){
+        val trainingDay = TrainingDay(id = mainUser.value.id , trainingDay = mainUser.value.trainingDay + 1  )
+        personRepo.updateTrainingDay(trainingDay)
+    }
+
+
+
+
     fun fetchMainUser() = viewModelScope.launch(Dispatchers.IO) {
         personRepo.getPersonFromRoom(213742069L).collect {
             mainUser.value = it
         }
+    }
+
+    fun updateExerciseList (exercise : Exercise) = viewModelScope.launch(Dispatchers.IO) {
+        cachedExerciseList.remove(exercise)
+    }
+
+    fun cacheList(items : MutableList<Exercise>) = viewModelScope.launch(Dispatchers.IO) {
+        cachedExerciseList.clear()
+        cachedExerciseList.addAll(items)
+        initialSize.value = items.size
     }
 
     fun fetchFirebaseTraining(dayPathIndex : Int) = viewModelScope.launch(Dispatchers.IO) {

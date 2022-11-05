@@ -49,17 +49,9 @@ class StartScreenViewModel @Inject constructor(
 
 
 
-
-    fun addTestUser(){
-        viewModelScope.launch(Dispatchers.IO) {
-            personRepo.addBuddyToRoom(Person(
-                id = 213742069L,
-                Bench = 100f,
-                Squat = 120f,
-                Deadlift = 140f,
-                Name = "Piotr Nowak",
-                trainingDay = 0
-            ))
+    fun fetchMainUser() = viewModelScope.launch(Dispatchers.IO){
+        personRepo.getPersonFromRoom(213742069L).collect {
+            mainUser.value = it
         }
     }
 

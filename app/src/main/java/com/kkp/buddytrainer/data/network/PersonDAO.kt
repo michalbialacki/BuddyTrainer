@@ -3,10 +3,7 @@ package com.kkp.buddytrainer.data.network
 import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
 import com.kkp.buddytrainer.core.Constants.PERSON_TABLE
-import com.kkp.buddytrainer.domain.model.Bench
-import com.kkp.buddytrainer.domain.model.Deadlift
-import com.kkp.buddytrainer.domain.model.Person
-import com.kkp.buddytrainer.domain.model.Squat
+import com.kkp.buddytrainer.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,6 +19,9 @@ interface PersonDAO {
 
     @Delete
     fun deleteBuddy(buddy: Person)
+
+    @Update(entity = Person::class)
+    fun updateTrainingDay(trainingDay: TrainingDay)
 
     @Update(entity = Person::class)
     fun updateBenchPR(bench : Bench)

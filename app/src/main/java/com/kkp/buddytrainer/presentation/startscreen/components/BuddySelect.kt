@@ -36,6 +36,12 @@ fun BuddySelect(
     var soloTrainingSwitch by remember {viewModel.soloTrainingSwitch}
     val context = LocalContext.current
 
+    LaunchedEffect(true){
+        viewModel.fetchMainUser()
+        mainUser = viewModel.mainUser.value
+    }
+
+
     when(isLoading){
         true -> {
             CircularProgressIndicator(color = MaterialTheme.colors.primary)
@@ -82,7 +88,9 @@ fun BuddySelect(
                 }
             }
             Spacer(modifier = Modifier.size(120.dp))
-            Button(onClick = { navController.navigate("TrainingScreen/${mainUser.trainingDay}") }) {
+            Button(onClick = {
+                navController.navigate("TrainingScreen/${mainUser.trainingDay}")
+            }) {
                 Text(text = "Start the workout of the day!")
             }
         }

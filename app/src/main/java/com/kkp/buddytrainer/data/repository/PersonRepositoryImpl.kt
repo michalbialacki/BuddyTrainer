@@ -1,10 +1,7 @@
 package com.kkp.buddytrainer.data.repository
 
 import com.kkp.buddytrainer.data.network.PersonDAO
-import com.kkp.buddytrainer.domain.model.Bench
-import com.kkp.buddytrainer.domain.model.Deadlift
-import com.kkp.buddytrainer.domain.model.Person
-import com.kkp.buddytrainer.domain.model.Squat
+import com.kkp.buddytrainer.domain.model.*
 import com.kkp.buddytrainer.domain.repository.PersonRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -24,5 +21,7 @@ class PersonRepositoryImpl(
     override suspend fun updateDeadlift(deadlift: Deadlift) = personDAO.updateDeadliftPR(deadlift)
 
     override suspend fun updateSquat(squat: Squat) = personDAO.updateSquatPR(squat)
+
+    override suspend fun updateTrainingDay(trainingDay: TrainingDay) = personDAO.updateTrainingDay(trainingDay)
 
 }
