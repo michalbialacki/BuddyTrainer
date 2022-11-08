@@ -1,9 +1,6 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -11,15 +8,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.kkp.buddytrainer.core.Resource
-import com.kkp.buddytrainer.domain.model.Exercise
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
-import java.lang.reflect.Type
 
 @Composable
 fun BuddySelect(
@@ -29,16 +22,18 @@ fun BuddySelect(
     val expanded = remember{ mutableStateOf(false) }
     val buddiesList by remember {viewModel.buddiesList}
     var selectedIndex by remember { mutableStateOf(0) }
-    var selectedBudyName by remember { mutableStateOf(viewModel.selectedBuddy.value.Name) }
     val isLoading by remember { viewModel.isLoading}
     val errorOccurred by remember {viewModel.errorOccurred}
     var mainUser by remember {viewModel.mainUser}
+    var selectedBuddy by remember { mutableStateOf(viewModel.selectedBuddy.value) }
     var soloTrainingSwitch by remember {viewModel.soloTrainingSwitch}
     val context = LocalContext.current
 
     LaunchedEffect(true){
         viewModel.fetchMainUser()
         mainUser = viewModel.mainUser.value
+        viewModel.getUsers()
+
     }
 
 
@@ -48,11 +43,10 @@ fun BuddySelect(
         }
         false && !errorOccurred -> {
             Button(onClick = {
-                viewModel.getUsers()
                 expanded.value = !expanded.value
             }) {
                 if (buddiesList.size > 0 && !soloTrainingSwitch){
-                    Text(text = selectedBudyName)
+                    Text(text = selectedBuddy.Name)
                     DropdownMenu(
                         expanded = expanded.value,
                         onDismissRequest = { expanded.value = false },
@@ -67,7 +61,7 @@ fun BuddySelect(
                                 onClick = {
                                 selectedIndex = index
                                 expanded.value = false
-                                selectedBudyName = item.Name
+                                selectedBuddy = item
                                 viewModel.buddySelected(item)
                                 },
                             ) {
@@ -89,7 +83,11 @@ fun BuddySelect(
             }
             Spacer(modifier = Modifier.size(120.dp))
             Button(onClick = {
-                navController.navigate("TrainingScreen/${mainUser.trainingDay}")
+                var buddyId = 213742069L
+                if(!soloTrainingSwitch && selectedBuddy.id != 404L){
+                    buddyId = selectedBuddy.id
+                }
+                navController.navigate("TrainingScreen/${mainUser.trainingDay}/${buddyId}")
             }) {
                 Text(text = "Start the workout of the day!")
             }

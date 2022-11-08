@@ -34,17 +34,25 @@ class MainActivity : ComponentActivity() {
                     composable(route = "StartScreen"){
                         StartScreen(navController = navController)
                     }
-                    composable(route = "TrainingScreen/{userTrainingDay}", arguments = listOf(
+                    composable(route = "TrainingScreen/{userTrainingDay}/{buddyId}", arguments = listOf(
                         navArgument("userTrainingDay"){
                             type = NavType.IntType
-                        })
+                        },
+                        navArgument("buddyId"){
+                            type = NavType.LongType
+                        }
+                    )
                     ){
                         val userTrainingDay = remember{
                             it.arguments?.getInt("userTrainingDay")
                         }
+                        val buddyId = remember{
+                            it.arguments?.getLong("buddyId")
+                        }
                         TrainingScreen(
                             navController = navController,
-                            userTrainingDay = userTrainingDay ?: 0
+                            userTrainingDay = userTrainingDay ?: 0,
+                            buddyId = buddyId ?: 404L
                         )
                     }
                     composable(

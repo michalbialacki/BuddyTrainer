@@ -1,5 +1,6 @@
 package com.kkp.buddytrainer.presentation.trainingScreen.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -24,29 +25,39 @@ import com.kkp.buddytrainer.presentation.trainingScreen.TrainingScreenViewModel
 @Composable
 fun ExerciseCard(
     exercise: Exercise,
-    currentUser : Person,
+    currentUserInput : Person,
     viewModel: TrainingScreenViewModel = hiltViewModel(),
     onExeSelected : () -> Unit,
 ) {
-    var exerciseMaxPR = when(exercise.name){
-        "Bench Press" -> {currentUser.Bench}
-        "Deadlift" -> {currentUser.Deadlift}
-        "Squat" -> {currentUser.Squat}
-        "Squat MR10 + ExtraVolume" -> {currentUser.Squat}
-        "Squat MR10 + BackOff Squat" -> {currentUser.Squat}
-        else -> {0f}
-    }
+
     var index by remember { mutableStateOf(0)}
     var reps by remember { mutableStateOf(exercise.reps!![index]) }
-    var load by remember { mutableStateOf((exercise.multi!![index] * exerciseMaxPR)) }
+    var exercisePR = when(exercise.name){
+        "Bench Press" -> currentUserInput.Bench
+        "Deadlift" -> currentUserInput.Deadlift
+        "Squat" -> currentUserInput.Squat
+        "Squat MR10 + ExtraVolume" -> currentUserInput.Squat
+        "Squat MR10 + BackOff Squat" -> currentUserInput.Squat
+        else -> {0f}
+    }
+//    var load : MutableState<Float> by remember { mutableStateOf<MutableState<Float>>((exercise.multi!![index] * exercisePR)).value}
+    var load = remember { mutableStateOf(exercise.multi!![index]*exercisePR)}
     val context = LocalContext.current
+
+    Log.d("CurrentUser", "CardResponse: ${currentUserInput}")
+
+
     Box(modifier = Modifier.background(Color.LightGray)) {
         Card(modifier = Modifier.pointerInput(Unit){
             detectTapGestures(
                 onDoubleTap = {
                     when(index){
                         in (0..((exercise.multi!!.size)-2)) -> {
-                            index++
+                            index++.also {
+                                reps = mutableStateOf(exercise.reps!![index]).value
+                                load.value = (exercise.multi!![index] * exercisePR)
+
+                            }
                         }
                         else -> {
                             index = exercise.multi!!.size
@@ -59,12 +70,13 @@ fun ExerciseCard(
                 }
             )
         }) {
+
             Column(modifier = Modifier.padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = exercise.name.toString())
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                     Text(text = reps)
-                    Text(text = if(exerciseMaxPR !=0f){
-                        load.toString()
+                    Text(text = if(exercisePR !=0f){
+                        load.value.toString()
                     }else{
                         "Not specified"
                     })

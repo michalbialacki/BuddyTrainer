@@ -29,10 +29,13 @@ class TrainingScreenViewModel @Inject constructor(
 
     private var mainUser : MutableState<Person> = mutableStateOf(Person(trainingDay = 0))
     private val database = Firebase.database("https://buddytrainer-b54d4-default-rtdb.europe-west1.firebasedatabase.app/")
+    var buddySwitch : MutableState<Boolean> = mutableStateOf(false)
+    var buddyUser : MutableState<Person> = mutableStateOf(Person())
     var response : MutableState<Resource> = mutableStateOf(Resource.Empty)
-    var index : MutableState<Int> = mutableStateOf(0)
     var cachedExerciseList = mutableStateListOf<Exercise>()
     var initialSize : MutableState<Int> = mutableStateOf(0)
+    var currentUser : MutableState<Person> = mutableStateOf(mainUser.value)
+    private var exercisePR : MutableState<Float> = mutableStateOf(0f)
 
 
     init {
@@ -43,14 +46,28 @@ class TrainingScreenViewModel @Inject constructor(
     fun getMainUser() : Person{
         return mainUser.value
     }
+    fun getBuddyUser() : Person{
+        return buddyUser.value
+    }
+
+
+    fun fetchBuddy(buddyId : Long) = viewModelScope.launch(Dispatchers.IO){
+        if(buddyId != 404L){
+            personRepo.getPersonFromRoom(buddyId).collect {
+                buddyUser.value = it
+            }
+        }
+    }
 
     fun updateMainUserTrainingDay() = viewModelScope.launch(Dispatchers.IO){
         val trainingDay = TrainingDay(id = mainUser.value.id , trainingDay = mainUser.value.trainingDay + 1  )
         personRepo.updateTrainingDay(trainingDay)
     }
 
-
-
+    fun updateSwitchState(person : Person) = viewModelScope.launch(Dispatchers.IO){
+        buddySwitch.value = !buddySwitch.value
+        currentUser.value = person
+    }
 
     fun fetchMainUser() = viewModelScope.launch(Dispatchers.IO) {
         personRepo.getPersonFromRoom(213742069L).collect {
