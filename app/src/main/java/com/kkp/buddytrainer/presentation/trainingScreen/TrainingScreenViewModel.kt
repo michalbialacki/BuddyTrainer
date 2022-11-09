@@ -77,6 +77,7 @@ class TrainingScreenViewModel @Inject constructor(
 
     fun updateExerciseList (exercise : Exercise) = viewModelScope.launch(Dispatchers.IO) {
         cachedExerciseList.remove(exercise)
+        cachedExerciseList.replaceAll { it.copy() }
     }
 
     fun cacheList(items : MutableList<Exercise>) = viewModelScope.launch(Dispatchers.IO) {

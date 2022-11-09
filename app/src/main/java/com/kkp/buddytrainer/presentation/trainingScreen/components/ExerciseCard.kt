@@ -40,12 +40,8 @@ fun ExerciseCard(
         "Squat MR10 + BackOff Squat" -> currentUserInput.Squat
         else -> {0f}
     }
-//    var load : MutableState<Float> by remember { mutableStateOf<MutableState<Float>>((exercise.multi!![index] * exercisePR)).value}
     var load = remember { mutableStateOf(exercise.multi!![index]*exercisePR)}
     val context = LocalContext.current
-
-    Log.d("CurrentUser", "CardResponse: ${currentUserInput}")
-
 
     Box(modifier = Modifier.background(Color.LightGray)) {
         Card(modifier = Modifier.pointerInput(Unit){

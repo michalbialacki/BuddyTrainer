@@ -34,15 +34,15 @@ fun TrainingScreen(
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
+            if(!buddyUser.Name.isNullOrEmpty() && buddyUser.id != 213742069L) TrainingScreenTopBar(
+                navController = navController,
+                buddyUser = buddyUser,
+                mainUser = viewModel.getMainUser()
+            )
             when(response){
                 is Resource.Success ->{
                     buddyUser = viewModel.getBuddyUser()
                     val exerciseList = (response as Resource.Success).data
-                    if(!buddyUser.Name.isNullOrEmpty() && buddyUser.id != 213742069L) TrainingScreenTopBar(
-                        navController = navController,
-                        buddyUser = buddyUser,
-                        mainUser = viewModel.getMainUser()
-                    )
                     ExerciseColumn(response = exerciseList, navController = navController, mainUser = viewModel.getMainUser())
                     viewModel.cacheList((response as Resource.Success).data)
 
