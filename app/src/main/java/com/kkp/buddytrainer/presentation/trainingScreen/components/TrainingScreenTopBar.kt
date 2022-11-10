@@ -38,7 +38,7 @@ fun TrainingScreenTopBar(
             .background(Color.DarkGray),
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
-        if(soloSwitch.value){
+        if(!soloSwitch.value){
             trainingBuddy = mainUser
             viewModel.currentUser.value = mainUser
         }else{

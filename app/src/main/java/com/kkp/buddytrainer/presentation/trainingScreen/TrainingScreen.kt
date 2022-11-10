@@ -14,6 +14,7 @@ import com.kkp.buddytrainer.domain.model.Person
 import com.kkp.buddytrainer.presentation.trainingScreen.components.ExerciseColumn
 import com.kkp.buddytrainer.presentation.trainingScreen.components.TrainingScreenTopBar
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TrainingScreen(
     navController: NavController,

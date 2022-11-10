@@ -45,9 +45,6 @@ fun ExerciseColumn(
     val initialListSize = remember { viewModel.initialSize }
     var progress = remember { mutableStateOf(0) }
     var switchState: Boolean by remember { mutableStateOf(viewModel.buddySwitch.value) }
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val listState = rememberLazyListState()
-    val context = LocalContext.current
     currentList.swapList(response)
 
     BackHandler {
@@ -62,6 +59,8 @@ fun ExerciseColumn(
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            switchState = viewModel.buddySwitch.value
+            currentUser = viewModel.currentUser.value
             if (progress.value != initialListSize.value) {
                 LazyColumn(
                     modifier = Modifier
@@ -125,9 +124,15 @@ fun ExerciseColumn(
                                             .height(Dp(50f))
                                             .align(alignment = Alignment.CenterVertically)
                                     ) {
-                                        ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
+                                            if(!switchState){
+                                                ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
 
-                                        }
+                                                }
+                                            }else{
+                                                ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
+
+                                                }
+                                            }
                                     }
                                 }
                             )
@@ -152,17 +157,3 @@ fun <T> SnapshotStateList<T>.swapList(newList: List<T>){
     addAll(newList)
 }
 
-/*if (!switchState) {
-    currentUser = viewModel.getMainUser()
-}else{
-    currentUser = viewModel.getBuddyUser()
-}
-items(currentList){ exercise ->
-    switchState = viewModel.buddySwitch.value.also {
-        ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
-            viewModel.updateExerciseList(exercise)
-            progress.value +=1
-        }
-    }
-
-}*/
