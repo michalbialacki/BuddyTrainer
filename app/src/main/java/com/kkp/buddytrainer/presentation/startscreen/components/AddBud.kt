@@ -26,6 +26,8 @@ fun AddBudd(
     }
     Row {
         Text(text = "you can use his ")
-        Text(text = "QR Code")
+        Text(text = "QR Code", modifier = Modifier.clickable{
+            navController.navigate("QRAddScreen")
+        })
     }
 }

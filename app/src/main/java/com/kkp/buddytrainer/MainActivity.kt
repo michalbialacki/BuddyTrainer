@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kkp.buddytrainer.inputsscreen.presentation.InputsScreen
 import com.kkp.buddytrainer.presentation.addbuddyscreen.AddBuddyScreen
+import com.kkp.buddytrainer.presentation.qrscreen.QRAddBuddyScreen
 import com.kkp.buddytrainer.presentation.startscreen.StartScreen
 import com.kkp.buddytrainer.presentation.trainingScreen.TrainingScreen
 import com.kkp.buddytrainer.ui.theme.BuddyTrainerTheme
@@ -72,6 +73,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("AddBuddyScreen"){
                         AddBuddyScreen(navController = navController)
+                    }
+                    composable("QRAddScreen"){
+                        QRAddBuddyScreen(navController = navController)
                     }
                 }
             }
