@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
 import android.util.Size
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -83,6 +84,16 @@ fun QRAddBuddyScreen(
                         ContextCompat.getMainExecutor(context),
                         QRCodeAnalyzer { result ->
                             code = result
+                            viewModel.addUser(code)
+                            if(viewModel.checkErrorState()){
+                                Toast.makeText(context,"Error ocurred",Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(context,"New buddy added!",Toast.LENGTH_SHORT).show()
+                                navController.navigate("StartScreen"){
+                                    popUpTo("StartScreen") {inclusive = true}
+                                }
+                            }
+
                         }
                     )
                     try {
