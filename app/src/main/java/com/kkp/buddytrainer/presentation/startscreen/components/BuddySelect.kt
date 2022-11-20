@@ -1,14 +1,17 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -51,29 +54,37 @@ fun BuddySelect(
                         expanded = expanded.value,
                         onDismissRequest = { expanded.value = false },
                         modifier = Modifier
-                            .fillMaxWidth(0.6f)
+                            .fillMaxWidth(0.55f)
                             .background(
                                 Color.Red
                             )
                     ){
-                        buddiesList.forEachIndexed { index, item ->
-                            DropdownMenuItem(
-                                onClick = {
-                                selectedIndex = index
-                                expanded.value = false
-                                selectedBuddy = item
-                                viewModel.buddySelected(item)
-                                },
-                            ) {
-                                Text(text = item.Name,
-                                    /*modifier = Modifier.pointerInput(Unit){
-                                    detectTapGestures (
-                                        onLongPress = {
-                                            Toast.makeText(context,"Here",Toast.LENGTH_SHORT).show()
-                                            viewModel.deleteBuddy(item) }
-                                    )
-                                }*/
-                                )
+                        Column(
+                            modifier = Modifier
+                                .height(120.dp)
+                                .verticalScroll(rememberScrollState()),
+                        ){
+                            buddiesList.forEachIndexed { index, item ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        selectedIndex = index
+                                        expanded.value = false
+                                        selectedBuddy = item
+                                        viewModel.buddySelected(item)
+                                    },
+                                ) {
+                                    Box(modifier = Modifier.fillMaxWidth(),contentAlignment = Alignment.Center){
+                                        Text(text = item.Name, textAlign = TextAlign.Center,
+                                            /*modifier = Modifier.pointerInput(Unit){
+                                            detectTapGestures (
+                                                onLongPress = {
+                                                    Toast.makeText(context,"Here",Toast.LENGTH_SHORT).show()
+                                                    viewModel.deleteBuddy(item) }
+                                            )
+                                        }*/
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

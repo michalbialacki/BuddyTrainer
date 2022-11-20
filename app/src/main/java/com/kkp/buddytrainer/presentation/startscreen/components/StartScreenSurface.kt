@@ -21,7 +21,7 @@ fun StartScreenSurface(
                 .fillMaxSize(0.8f)
                 .background(Color.LightGray),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             TopBar(navController = navController)
             ChooseBuddySurface(navController = navController)

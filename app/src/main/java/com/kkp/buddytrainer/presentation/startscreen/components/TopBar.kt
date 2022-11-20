@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
@@ -33,8 +34,8 @@ fun TopBar(
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
-            .background(Color.DarkGray),
+            .height(80.dp),
+//            .offset(y=-50.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
         Box(
