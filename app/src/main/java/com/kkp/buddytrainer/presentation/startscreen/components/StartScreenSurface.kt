@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
@@ -33,9 +34,10 @@ fun StartScreenSurface(
                 .fillMaxSize(0.8f)
                 .background(Color.LightGray),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+//            verticalArrangement = Arrangement.SpaceBetween
         ) {
             TopBar(navController = navController)
+            Spacer(modifier = Modifier.size(60.dp))
             AnimatedVisibility(
                 visible = isVisible,
                 enter = slideInHorizontally() + fadeIn(),

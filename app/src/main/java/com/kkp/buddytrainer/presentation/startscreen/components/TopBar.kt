@@ -34,7 +34,7 @@ fun TopBar(
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp),
+            .height(120.dp),
 //            .offset(y=-50.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
@@ -43,7 +43,8 @@ fun TopBar(
                 .weight(1f)
                 .padding(16.dp),
             contentAlignment = Alignment.CenterStart){
-            Button(onClick = {
+            IconMenu(navController = navController)
+            /*Button(onClick = {
                 if(soloSwitch.value){
                     navController.navigate("InputsScreen/${404L}")
                 }else{
@@ -51,7 +52,7 @@ fun TopBar(
                 }
             }) {
                 Text(text = "Inputs")
-            }
+            } */
         }
         Box(
             modifier = Modifier
