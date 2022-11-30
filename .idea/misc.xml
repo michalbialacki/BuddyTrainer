@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ASNauka/BuddyTrainer/app/src/main/res/drawable/qr_scanner.xml" value="0.1235" />
+        <entry key="..\:/ASNauka/BuddyTrainer/app/src/main/res/drawable/qr_scanner_foreground.xml" value="0.1235" />
         <entry key="..\:/AStudio/jre/caches/transforms-3/8dded4c0a53c7033d4e7af611882f683/transformed/play-services-base-17.1.0/res/drawable/common_google_signin_btn_text_dark.xml" value="0.1235" />
       </map>
     </option>

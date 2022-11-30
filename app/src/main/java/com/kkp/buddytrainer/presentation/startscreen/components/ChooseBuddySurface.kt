@@ -43,7 +43,7 @@ fun ChooseBuddySurface(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                AddBudd(navController = navController)
+//                AddBudd(navController = navController)
             }
         }
     }

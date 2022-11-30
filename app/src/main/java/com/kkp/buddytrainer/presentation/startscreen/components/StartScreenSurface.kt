@@ -37,7 +37,7 @@ fun StartScreenSurface(
 //            verticalArrangement = Arrangement.SpaceBetween
         ) {
             TopBar(navController = navController)
-            Spacer(modifier = Modifier.size(60.dp))
+            Spacer(modifier = Modifier.size(120.dp))
             AnimatedVisibility(
                 visible = isVisible,
                 enter = slideInHorizontally() + fadeIn(),

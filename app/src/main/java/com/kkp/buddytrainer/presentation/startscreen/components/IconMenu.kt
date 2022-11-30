@@ -1,23 +1,17 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kkp.buddytrainer.R
 import com.kkp.buddytrainer.presentation.startscreen.StartScreenViewModel
 
 @Composable
@@ -38,7 +32,7 @@ fun IconMenu(
     Box {
         Row {
             Column {
-                IconItem {
+                IconItem(painter = painterResource(id = R.drawable.menu_hamburger)) {
                     isVisible = !isVisible
 
                 } // Show/Hide menu action button
@@ -48,7 +42,7 @@ fun IconMenu(
                     exit = slideOutVertically(tween(500)) + fadeOut()
                 ) {
                     Spacer(modifier = Modifier.height(10.dp))
-                    IconItem(icon = Icons.Default.Create) {
+                    IconItem(painter = painterResource(id = R.drawable.add_buddy)) {
                         navController.navigate("AddBuddyScreen")
                     } // DOWN; Manual input
                 }
@@ -60,7 +54,7 @@ fun IconMenu(
                     exit = slideOutHorizontally(tween(500)) + fadeOut()
                 ) {
                     Spacer(modifier = Modifier.width(10.dp))
-                    IconItem(icon = Icons.Default.Face) {
+                    IconItem(painter = painterResource(id = R.drawable.qr_scanner_foreground)) {
                         navController.navigate("QRAddScreen")
                     } //Right ; QR input
                 }
@@ -74,7 +68,7 @@ fun IconMenu(
                     } + fadeOut(),
                 ) {
                     Spacer(modifier = Modifier.width(10.dp))
-                    IconItem(icon = Icons.Default.Home) {
+                    IconItem(painter = painterResource(id = R.drawable.progress_monitor)) {
                         if(soloSwitch.value){
                             navController.navigate("InputsScreen/${404L}")
                         }else{
