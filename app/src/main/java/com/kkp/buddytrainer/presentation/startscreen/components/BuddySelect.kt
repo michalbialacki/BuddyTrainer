@@ -55,7 +55,7 @@ fun BuddySelect(
                             modifier = Modifier
                                 .fillMaxWidth(0.55f)
                                 .background(
-                                    Color.Red
+                                    MaterialTheme.colors.background
                                 )
                         ){
                             Column(

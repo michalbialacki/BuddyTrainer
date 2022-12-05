@@ -22,13 +22,11 @@ fun ChooseBuddySurface(
 ) {
     Box(modifier = Modifier
         .offset(y=-50.dp)
-        .clip(RoundedCornerShape(16.dp))
-        .border(4.dp, color = Color.Black),
+        .clip(RoundedCornerShape(16.dp)),
         contentAlignment = Alignment.TopCenter){
         Column(
             modifier = Modifier
-                .fillMaxSize(0.8f)
-                .background(Color.Magenta),
+                .fillMaxSize(0.8f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
             Column(
