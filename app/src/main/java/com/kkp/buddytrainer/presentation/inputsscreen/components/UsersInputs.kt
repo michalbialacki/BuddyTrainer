@@ -1,14 +1,18 @@
 package com.kkp.buddytrainer.presentation.inputsscreen.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,45 +29,54 @@ fun UsersInputs(
     val mainUser by remember{viewModel.mainUser}
     val buddyUser by remember {viewModel.buddyUser}
     val isLoading by remember{viewModel.isLoading}
+    var isVisible by remember{ mutableStateOf(false)}
 
     LaunchedEffect(true){
         viewModel.getUsers(userId)
         viewModel.getUsers(404L)
+        isVisible = true
     }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.fillMaxSize()){
-            if(!isLoading){
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .background(Color.Magenta),
-                    verticalArrangement = Arrangement.Center
-                ){
-                    EditInputs(person = mainUser)
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(0.5f)
-                        .background(Teal200),
-                    verticalArrangement = Arrangement.Center
-                ){
-                    Spacer(modifier = Modifier.size(25.dp))
-                    ExerciseNamesColumn()
-                }
-                if (userId != 404L){
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .background(Color.Red),
-                        verticalArrangement = Arrangement.Center
-                    ){
-                        EditInputs(person = buddyUser)
+    Box(
+        modifier = Modifier.clip(RoundedCornerShape(10.dp)),
+        contentAlignment = Alignment.Center) {
+
+        Row(modifier = Modifier
+            .background(MaterialTheme.colors.background)
+            )
+        {
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = slideInVertically() + fadeIn(),
+                exit = slideOutVertically() + fadeOut()
+            ) {
+                Row(modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(480.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                    verticalAlignment  = Alignment.CenterVertically)
+                {
+                    if (!isLoading) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            EditInputs(person = mainUser)
+                        }
+                        if (userId != 404L) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f),
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                EditInputs(person = buddyUser)
+                            }
+                        }
+                    } else {
+                        CircularProgressIndicator(color = MaterialTheme.colors.primaryVariant)
                     }
                 }
-            }else{
-                CircularProgressIndicator(color = MaterialTheme.colors.primaryVariant)
             }
         }
     }

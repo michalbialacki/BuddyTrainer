@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
@@ -39,7 +40,7 @@ fun EditInputs(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Teal200),
+            .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -51,7 +52,6 @@ fun EditInputs(
         Spacer(modifier = Modifier.size(20.dp))
         Column(
             modifier = Modifier
-                .fillMaxSize(0.5f)
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.LightGray)
                 .clickable(indication = null, interactionSource = interactionSource) {
@@ -62,13 +62,13 @@ fun EditInputs(
         ) {
 
 
-            SDBTextfield(exerciseRecordValue = person.Bench){
+            SDBTextfield(exerciseRecordValue = person.Bench, exerciseName = "Bench press"){
                 viewModel.updateBench(Bench(id = person.id,Bench = it))
             }
-            SDBTextfield(exerciseRecordValue = person.Squat){
+            SDBTextfield(exerciseRecordValue = person.Squat, exerciseName = "Squat"){
                 viewModel.updateSquat(Squat(id = person.id, Squat = it))
             }
-            SDBTextfield(exerciseRecordValue = person.Deadlift){
+            SDBTextfield(exerciseRecordValue = person.Deadlift, exerciseName = "Deadlift"){
                 viewModel.updateDeadlift(Deadlift(id = person.id, Deadlift = it))
             }
         }

@@ -36,13 +36,6 @@ fun ChooseBuddySurface(
             ){
                 BuddySelect(navController = navController)
             }
-            Column(
-                modifier = Modifier.offset(y=-10.dp).weight(0.5f),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-//                AddBudd(navController = navController)
-            }
         }
     }
 }

@@ -15,11 +15,20 @@ import com.kkp.buddytrainer.ui.theme.Teal200
 
 @Composable
 fun ExerciseNamesColumn() {
-    Surface {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center)
+    {
+        Spacer(modifier = Modifier.size(40.dp))
         Column(
-            modifier = Modifier.fillMaxHeight(0.5f).background(Teal200).padding(
-                start = 12.dp,
-            ),
+            modifier = Modifier
+                .fillMaxHeight(0.5f)
+                .background(Teal200)
+                .padding(
+                    start = 12.dp,
+                ),
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

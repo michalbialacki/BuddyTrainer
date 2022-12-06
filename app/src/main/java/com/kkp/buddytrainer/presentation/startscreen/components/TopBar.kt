@@ -3,9 +3,7 @@ package com.kkp.buddytrainer.presentation.startscreen.components
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
@@ -60,9 +58,16 @@ fun TopBar(
                 .padding(16.dp),
             contentAlignment = Alignment.CenterEnd
         ){
-            Switch(checked = soloSwitch.value, onCheckedChange = {
+            Switch(
+                checked = soloSwitch.value,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colors.primary,
+                    uncheckedThumbColor = MaterialTheme.colors.secondary,
+                    checkedTrackColor = MaterialTheme.colors.primaryVariant,
+                    uncheckedTrackColor = MaterialTheme.colors.secondaryVariant,
+                ),
+                onCheckedChange = {
                 viewModel.switchBuddySwitch()
-
             } )
         }
 
