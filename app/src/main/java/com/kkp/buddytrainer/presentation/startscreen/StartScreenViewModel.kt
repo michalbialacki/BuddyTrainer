@@ -41,7 +41,8 @@ class StartScreenViewModel @Inject constructor(
         var errorOccurred = mutableStateOf(false)
         var soloTrainingSwitch = mutableStateOf(false)
         var selectedBuddy : MutableState<Person> = mutableStateOf(dummy.copy(
-            Name = "Choose your buddy!"
+            Name = "Choose your buddy!",
+            id = 213742069L
         ))
         private var buddyListSize : MutableState<Int> = mutableStateOf(0)
 

@@ -3,9 +3,13 @@ package com.kkp.buddytrainer.presentation.trainingScreen.components
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -44,8 +48,10 @@ fun ExerciseColumn(
     val currentList = remember { mutableStateListOf<Exercise>() }
     val initialListSize = remember { viewModel.initialSize }
     var progress = remember { mutableStateOf(0) }
+    var isVisible by remember { mutableStateOf(false)}
     var switchState: Boolean by remember { mutableStateOf(viewModel.buddySwitch.value) }
     currentList.swapList(response)
+
 
     BackHandler {
         if (progress.value == initialListSize.value) {
@@ -55,17 +61,21 @@ fun ExerciseColumn(
             popUpTo("StartScreen") { inclusive = true }
         }
     }
+    LaunchedEffect(true){
+        isVisible = true
+    }
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(modifier = Modifier.fillMaxSize()) {
             switchState = viewModel.buddySwitch.value
-            currentUser = viewModel.currentUser.value
+            currentUser = mainUser
             if (progress.value != initialListSize.value) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(4.dp)
+                        .padding(4.dp),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     if (currentList.isNotEmpty() || initialListSize.value > 0) {
                         itemsIndexed(items = currentList, key = {index, item -> item.hashCode()}) { index, exercise ->
@@ -114,7 +124,6 @@ fun ExerciseColumn(
                                     }
                                 },
                                 dismissContent = {
-
                                     Card(
                                         elevation = animateDpAsState(
                                             if (dismissState.dismissDirection != null) 4.dp else 0.dp
@@ -124,15 +133,15 @@ fun ExerciseColumn(
                                             .height(Dp(50f))
                                             .align(alignment = Alignment.CenterVertically)
                                     ) {
-                                            if(!switchState){
-                                                ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
+                                        if(!switchState){
+                                            ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
 
-                                                }
-                                            }else{
-                                                ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
-
-                                                }
                                             }
+                                        }else{
+                                            ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
+
+                                            }
+                                        }
                                     }
                                 }
                             )

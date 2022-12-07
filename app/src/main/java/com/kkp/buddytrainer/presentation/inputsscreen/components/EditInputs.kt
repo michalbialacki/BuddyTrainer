@@ -53,7 +53,7 @@ fun EditInputs(
         Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-                .background(Color.LightGray)
+                .background(MaterialTheme.colors.onPrimary)
                 .clickable(indication = null, interactionSource = interactionSource) {
                     localFocus.clearFocus()
                 },

@@ -1,6 +1,11 @@
 package com.kkp.buddytrainer.presentation.trainingScreen
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
@@ -25,19 +30,21 @@ fun TrainingScreen(
     viewModel : TrainingScreenViewModel = hiltViewModel()
 ) {
     var response by remember { viewModel.response }
-    var buddyUser by remember { mutableStateOf(viewModel.currentUser.value).also {
-        viewModel.fetchBuddy(buddyId)
-        viewModel.fetchMainUser()
-        }
-    }
+    var buddyUser by remember { mutableStateOf(viewModel.currentUser.value)}
+    var isVisible by remember{ mutableStateOf(false)}
+
 
     LaunchedEffect(true){
         viewModel.fetchFirebaseTraining(userTrainingDay)
+        isVisible = true
+        viewModel.fetchBuddy(buddyId)
+        viewModel.fetchMainUser()
+        buddyUser = viewModel.currentUser.value
     }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            if(!buddyUser.Name.isNullOrEmpty() && buddyUser.id != 213742069L) TrainingScreenTopBar(
+            if(!buddyUser.Name.isNullOrEmpty() && buddyUser.id == 404L) TrainingScreenTopBar(
                 navController = navController,
                 buddyUser = buddyUser,
                 mainUser = viewModel.getMainUser()
@@ -46,7 +53,9 @@ fun TrainingScreen(
                 is Resource.Success ->{
                     buddyUser = viewModel.getBuddyUser()
                     val exerciseList = (response as Resource.Success).data
-                    ExerciseColumn(response = exerciseList, navController = navController, mainUser = viewModel.getMainUser())
+                    AnimatedVisibility(visible = isVisible, enter = slideInVertically()+ fadeIn()) {
+                        ExerciseColumn(response = exerciseList, navController = navController, mainUser = viewModel.getMainUser())
+                    }
                     viewModel.cacheList((response as Resource.Success).data)
 
                 }

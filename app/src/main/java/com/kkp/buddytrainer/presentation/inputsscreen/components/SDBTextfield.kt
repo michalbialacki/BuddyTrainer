@@ -47,11 +47,14 @@ fun SDBTextfield(
 
     Box(
         modifier = Modifier
-            .padding(4.dp),
+            .padding(4.dp)
+        ,
         contentAlignment = Alignment.Center){
         Row (
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+            ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
@@ -66,7 +69,7 @@ fun SDBTextfield(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colors.onPrimary)
+                    .background(MaterialTheme.colors.primary)
                     .onFocusChanged {
                     },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, keyboardType = KeyboardType.Number),

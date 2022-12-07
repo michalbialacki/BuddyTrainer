@@ -43,7 +43,7 @@ fun ExerciseCard(
     var load = remember { mutableStateOf(exercise.multi!![index]*exercisePR)}
     val context = LocalContext.current
 
-    Box(modifier = Modifier.background(Color.LightGray)) {
+    Box() {
         Card(modifier = Modifier.pointerInput(Unit){
             detectTapGestures(
                 onDoubleTap = {
@@ -67,7 +67,7 @@ fun ExerciseCard(
             )
         }) {
 
-            Column(modifier = Modifier.padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(modifier = Modifier.background(MaterialTheme.colors.primary).padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = exercise.name.toString())
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                     Text(text = reps)

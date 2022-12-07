@@ -1,5 +1,6 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
