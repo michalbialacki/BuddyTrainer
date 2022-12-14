@@ -2,19 +2,24 @@ package com.kkp.buddytrainer.presentation.addbuddyscreen.components
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -47,6 +52,9 @@ fun BuddyParameterTextInput(
 
     TextField(
         modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(MaterialTheme.colors.primary)
             .onFocusChanged {
                 if(!it.isFocused && !text.text.isNullOrEmpty()){
                     try {
@@ -101,9 +109,13 @@ fun BuddyParameterTextInput(
             focusManager.clearFocus()
         }),
         label = {
-            Text(text = parName, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+            Text(text = parName, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().alpha(0.7f))
         },
-        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+        textStyle = LocalTextStyle
+            .current
+            .copy(
+                textAlign = TextAlign.Center,
+            )
     )
 
 }
