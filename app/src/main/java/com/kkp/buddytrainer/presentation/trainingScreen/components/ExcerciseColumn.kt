@@ -134,10 +134,12 @@ fun ExerciseColumn(
                                             .align(alignment = Alignment.CenterVertically)
                                     ) {
                                         if(!switchState){
+                                            currentUser = viewModel.getMainUser()
                                             ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
 
                                             }
                                         }else{
+                                            currentUser = viewModel.getBuddyUser()
                                             ExerciseCard(exercise = exercise, currentUserInput = currentUser) {
 
                                             }

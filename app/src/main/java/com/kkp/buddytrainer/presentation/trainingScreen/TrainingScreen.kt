@@ -44,7 +44,7 @@ fun TrainingScreen(
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            if(!buddyUser.Name.isNullOrEmpty() && buddyUser.id == 404L) TrainingScreenTopBar(
+            if(!buddyUser.Name.isNullOrEmpty() && buddyUser.id != 213742069L) TrainingScreenTopBar(
                 navController = navController,
                 buddyUser = buddyUser,
                 mainUser = viewModel.getMainUser()
