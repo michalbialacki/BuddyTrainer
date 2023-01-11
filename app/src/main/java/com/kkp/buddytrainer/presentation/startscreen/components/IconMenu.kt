@@ -1,5 +1,6 @@
 package com.kkp.buddytrainer.presentation.startscreen.components
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -32,17 +33,21 @@ fun IconMenu(
     Box {
         Row {
             Column {
-                IconItem(painter = painterResource(id = R.drawable.menu_hamburger)) {
+                /*IconItem(painter = painterResource(id = R.drawable.menu_hamburger)) {
                     isVisible = !isVisible
 
-                } // Show/Hide menu action button
+                } // Show/Hide menu action button */
+                IconGif(gifId = R.drawable.muscle){
+                    isVisible = !isVisible
+                    Log.d("GIF", "${R.drawable.muscle::class.java.typeName}")
+                }
                 AnimatedVisibility(
                     visible = isVisible,
                     enter = slideInVertically(tween(500)) + fadeIn(),
                     exit = slideOutVertically(tween(500)) + fadeOut()
                 ) {
                     Spacer(modifier = Modifier.height(10.dp))
-                    IconItem(painter = painterResource(id = R.drawable.add_buddy)) {
+                    IconGif(gifId = R.drawable.addbuddy){
                         navController.navigate("AddBuddyScreen")
                     } // DOWN; Manual input
                 }
@@ -54,7 +59,7 @@ fun IconMenu(
                     exit = slideOutHorizontally(tween(500)) + fadeOut()
                 ) {
                     Spacer(modifier = Modifier.width(10.dp))
-                    IconItem(painter = painterResource(id = R.drawable.qr_scanner_foreground)) {
+                    IconGif(R.drawable.scanner) {
                         navController.navigate("QRAddScreen")
                     } //Right ; QR input
                 }
@@ -68,7 +73,7 @@ fun IconMenu(
                     } + fadeOut(),
                 ) {
                     Spacer(modifier = Modifier.width(10.dp))
-                    IconItem(painter = painterResource(id = R.drawable.progress_monitor)) {
+                    IconGif(R.drawable.compare) {
                         if(soloSwitch.value){
                             navController.navigate("InputsScreen/${404L}")
                         }else{
