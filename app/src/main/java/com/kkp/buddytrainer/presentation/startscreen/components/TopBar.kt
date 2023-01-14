@@ -41,7 +41,7 @@ fun TopBar(
                 .weight(1f)
                 .padding(16.dp),
             contentAlignment = Alignment.CenterStart){
-            IconMenu(navController = navController)
+//            IconMenu(navController = navController)
             /*Button(onClick = {
                 if(soloSwitch.value){
                     navController.navigate("InputsScreen/${404L}")

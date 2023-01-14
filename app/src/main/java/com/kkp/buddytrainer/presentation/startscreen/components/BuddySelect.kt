@@ -94,7 +94,10 @@ fun BuddySelect(
                 Spacer(modifier = Modifier.size(60.dp))
             }
             Spacer(modifier = Modifier.size(60.dp))
-            Button(onClick = {
+
+            IconPopdMenu(navController = navController)
+
+            /*Button(onClick = {
                 var buddyId = 213742069L
                 if(!soloTrainingSwitch && selectedBuddy.id != 404L){
                     buddyId = selectedBuddy.id
@@ -102,7 +105,7 @@ fun BuddySelect(
                 navController.navigate("TrainingScreen/${mainUser.trainingDay}/${buddyId}")
             }) {
                 Text(text = "Start the workout of the day!")
-            }
+            }*/
         }
         else -> Text(text = "Error occurred!")
     }

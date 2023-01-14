@@ -2,13 +2,12 @@ package com.kkp.buddytrainer.presentation.startscreen.components
 
 import android.os.Build.VERSION.SDK_INT
 import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -16,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,8 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.ImageLoader
@@ -63,10 +66,12 @@ fun IconItem(
 @Composable
 fun IconGif(
     gifId : Int,
-    onSelect: () -> Unit
+    offsetValue : Dp =0.dp,
+    cstmModifeir : Modifier = Modifier,
+    onSelect: () -> Unit,
 ) {
-    val iconSize = 35.dp
-
+    val iconSize = (LocalConfiguration.current.screenWidthDp.dp - 4.dp) / 2 /3  //gets icon width based on screen
+    var isVisible : Boolean by remember{ mutableStateOf(false) }
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
         .components {
@@ -78,10 +83,15 @@ fun IconGif(
         }
         .build()
         Box(
-            modifier = Modifier
+            modifier = cstmModifeir
+                .clickable {
+                    isVisible = !isVisible
+                    onSelect()
+                }
                 .clip(CircleShape)
                 .size(iconSize + 5.dp)
-                .background(color = MaterialTheme.colors.primary),
+                .background(color = MaterialTheme.colors.primary)
+,
             contentAlignment = Alignment.Center
         ){
             Image(
@@ -91,7 +101,7 @@ fun IconGif(
                     }).build(), imageLoader = imageLoader
                 ),
                 contentDescription = null,
-                modifier = Modifier.size(iconSize).clickable { onSelect() },
+                modifier = Modifier.size(iconSize - 4.dp),
                 colorFilter = ColorFilter.tint(color = Color(255, 255, 240))
             )
         }

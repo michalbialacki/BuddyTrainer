@@ -39,14 +39,12 @@ fun IconMenu(
                 } // Show/Hide menu action button */
                 IconGif(gifId = R.drawable.muscle){
                     isVisible = !isVisible
-                    Log.d("GIF", "${R.drawable.muscle::class.java.typeName}")
                 }
                 AnimatedVisibility(
                     visible = isVisible,
                     enter = slideInVertically(tween(500)) + fadeIn(),
                     exit = slideOutVertically(tween(500)) + fadeOut()
                 ) {
-                    Spacer(modifier = Modifier.height(10.dp))
                     IconGif(gifId = R.drawable.addbuddy){
                         navController.navigate("AddBuddyScreen")
                     } // DOWN; Manual input
@@ -58,7 +56,6 @@ fun IconMenu(
                     enter = slideInHorizontally(tween(500)) + fadeIn(),
                     exit = slideOutHorizontally(tween(500)) + fadeOut()
                 ) {
-                    Spacer(modifier = Modifier.width(10.dp))
                     IconGif(R.drawable.scanner) {
                         navController.navigate("QRAddScreen")
                     } //Right ; QR input
@@ -72,7 +69,6 @@ fun IconMenu(
                         IntOffset(-(fullSize.width / 2) , -(fullSize.height / 2) )
                     } + fadeOut(),
                 ) {
-                    Spacer(modifier = Modifier.width(10.dp))
                     IconGif(R.drawable.compare) {
                         if(soloSwitch.value){
                             navController.navigate("InputsScreen/${404L}")
