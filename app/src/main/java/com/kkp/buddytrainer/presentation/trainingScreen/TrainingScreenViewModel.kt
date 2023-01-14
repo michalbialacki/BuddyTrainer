@@ -60,8 +60,15 @@ class TrainingScreenViewModel @Inject constructor(
     }
 
     fun updateMainUserTrainingDay() = viewModelScope.launch(Dispatchers.IO){
-        val trainingDay = TrainingDay(id = mainUser.value.id , trainingDay = mainUser.value.trainingDay + 1  )
-        personRepo.updateTrainingDay(trainingDay)
+        if (mainUser.value.trainingDay == 20){
+            personRepo.updateTrainingDay(
+                TrainingDay(id = mainUser.value.id, trainingDay = 0)
+            )
+        } else{
+            val trainingDay = TrainingDay(id = mainUser.value.id , trainingDay = mainUser.value.trainingDay + 1  )
+            personRepo.updateTrainingDay(trainingDay)
+        }
+
     }
 
     fun updateSwitchState(person : Person) = viewModelScope.launch(Dispatchers.IO){

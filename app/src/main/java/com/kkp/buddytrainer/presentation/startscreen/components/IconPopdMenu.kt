@@ -55,6 +55,8 @@ fun IconPopdMenu(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+
+                    Log.d("Buddy", "${trainingBuddy.value.id}")
                     AnimatedVisibility(
                         visible = isVisible,
                         enter = scaleIn(tween(500)) + fadeIn(),
@@ -72,7 +74,7 @@ fun IconPopdMenu(
                     ) {
                         Spacer(modifier = Modifier.width(10.dp))
                         IconGif(com.kkp.buddytrainer.R.drawable.compare, cstmModifeir = Modifier.offset(y=passedOffset[2].value)) {
-                            if(soloSwitch.value){
+                            if(soloSwitch.value || trainingBuddy.value.id == 213742069L){
                                 navController.navigate("InputsScreen/${404L}")
                             }else{
                                 navController.navigate("InputsScreen/${trainingBuddy.value.id}")
